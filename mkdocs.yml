@@ -1,0 +1,61 @@
+site_name: 'EO Application Packages - hands-on'
+theme:
+    name: 'material'
+    logo: imgs/TERRADUE_Icon_3.png
+    favicon: img/TERRADUE_Icon_3.png
+    palette:
+      - media: "(prefers-color-scheme: light)"
+        scheme: default
+        toggle:
+          icon: material/toggle-switch-off-outline
+          name: Switch to dark mode
+      - media: "(prefers-color-scheme: dark)"
+        scheme: slate
+        toggle:
+          icon: material/toggle-switch
+          name: Switch to light mode
+nav:
+    - EO Application Packages - hands-on: index.md
+    - Execution scenarios: 
+      - execution-scenarios/alice.md
+      - execution-scenarios/bob.md
+      - execution-scenarios/eric.md
+    
+plugins:
+  - mermaid2
+  - search
+  
+markdown_extensions:
+    - pymdownx.highlight
+    - pymdownx.snippets:
+        base_path: 'water-bodies/'
+    - pymdownx.superfences:
+        custom_fences:
+          - name: mermaid
+            class: mermaid
+            format: !!python/name:pymdownx.superfences.fence_div_format
+    - pymdownx.arithmatex:
+        generic: true
+    - codehilite:
+        linenums: true
+        guess_lang: false
+    - footnotes
+    - toc:
+        permalink: true
+    - pymdownx.details
+    - admonition
+    - pymdownx.tabbed
+    - pymdownx.superfences:
+        custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+extra_css:
+  - styles/css/app.css
+  - https://unpkg.com/mermaid@8.9.1/dist/mermaid.css
+  
+extra_javascript:
+  - javascripts/config.js
+  - https://unpkg.com/mermaid@8.9.1/dist/mermaid.min.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
