@@ -4,6 +4,12 @@ on:
     branches:
       - master
       - main
+
+    paths:
+      # Only rebuild website when apps have changed
+      - 'water-bodies/**'
+      - .github/**
+
 jobs:
   validate:
     runs-on: ubuntu-latest
