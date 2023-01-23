@@ -1,0 +1,560 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="../.." rel="prev"/>
+<link href="../bob/" rel="next"/>
+<link href="../../img/TERRADUE_Icon_3.png" rel="icon"/>
+<meta content="mkdocs-1.4.2, mkdocs-material-9.0.6" name="generator"/>
+<title>Alice - EO Application Packages - hands-on</title>
+<link href="../../assets/stylesheets/main.558e4712.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.2505c338.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../styles/css/app.css" rel="stylesheet"/>
+<link href="https://unpkg.com/mermaid@8.9.1/dist/mermaid.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+</head>
+<body data-md-color-accent="" data-md-color-primary="" data-md-color-scheme="default" dir="ltr">
+<script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#water-bodies-detection-application-package-development-and-test">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="EO Application Packages - hands-on" class="md-header__button md-logo" data-md-component="logo" href="../.." title="EO Application Packages - hands-on">
+<img alt="logo" src="../../imgs/TERRADUE_Icon_3.png"/>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            EO Application Packages - hands-on
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Alice
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_2" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path></svg>
+</label>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="" data-md-color-scheme="slate" id="__palette_2" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"></path></svg>
+</label>
+</form>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/Terradue/ogc-eo-application-package-hands-on.git" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="EO Application Packages - hands-on" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="EO Application Packages - hands-on">
+<img alt="logo" src="../../imgs/TERRADUE_Icon_3.png"/>
+</a>
+    EO Application Packages - hands-on
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/Terradue/ogc-eo-application-package-hands-on.git" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+        EO Application Packages - hands-on
+      </a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" id="__nav_2" type="checkbox"/>
+<label aria-expanded="true" class="md-nav__link" for="__nav_2" tabindex="0">
+          Execution scenarios
+          <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="Execution scenarios" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+          Execution scenarios
+        </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+          Alice
+          <span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+        Alice
+      </a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#water-bodies-detection-application-package-development-and-test">
+    Water bodies detection Application Package development and test
+  </a>
+<nav aria-label="Water bodies detection Application Package development and test" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#hands-on">
+    Hands-on
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#code-inspection">
+    Code inspection
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#application-package-execution">
+    Application Package execution
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#result-inspection">
+    Result inspection
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../bob/">
+        Bob
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../eric/">
+        Eric
+      </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#water-bodies-detection-application-package-development-and-test">
+    Water bodies detection Application Package development and test
+  </a>
+<nav aria-label="Water bodies detection Application Package development and test" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#hands-on">
+    Hands-on
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#code-inspection">
+    Code inspection
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#application-package-execution">
+    Application Package execution
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#result-inspection">
+    Result inspection
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1>Alice</h1>
+<h3 id="water-bodies-detection-application-package-development-and-test">Water bodies detection Application Package development and test<a class="headerlink" href="#water-bodies-detection-application-package-development-and-test" title="Permanent link">¶</a></h3>
+<p><strong>Alice implements the application package</strong></p>
+<p><img alt="image" src="../water-bodies-tb18-alice.jpg"/></p>
+<p>This Application Package takes as input Copernicus Sentinel-2 data and detects water bodies by applying the Otsu thresholding technique on the Normalized Difference Water Index (NDWI).</p>
+<p>The NDWI is calculated with: </p>
+<div class="arithmatex">\[
+NDWI = { (green - nir) \over (green + nir) } 
+\]</div>
+<p>Typically, NDWI values of water bodies are larger than 0.2 and built-up features have positive values between 0 and 0.2.</p>
+<p>Vegetation has much smaller NDWI values, which results in distinguishing vegetation from water bodies easier. </p>
+<p>The NDWI values correspond to the following ranges:</p>
+<table>
+<thead>
+<tr>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0,2 - 1</td>
+<td>Water surface</td>
+</tr>
+<tr>
+<td>0.0 - 0,2</td>
+<td>Flooding, humidity</td>
+</tr>
+<tr>
+<td>-0,3 - 0.0</td>
+<td>Moderate drought, non-aqueous surfaces</td>
+</tr>
+<tr>
+<td>-1 - -0.3</td>
+<td>Drought, non-aqueous surfaces</td>
+</tr>
+</tbody>
+</table>
+<p>To ease the determination of the water surface/non water surface, the Ostu thresholding technique is used. </p>
+<p>In the simplest form, the Otsu algorithm returns a single intensity threshold that separate pixels into two classes, foreground and background. This threshold is determined by minimizing intra-class intensity variance, or equivalently, by maximizing inter-class variance:</p>
+<p><img alt="image" src="https://upload.wikimedia.org/wikipedia/commons/3/34/Otsu%27s_Method_Visualization.gif"/></p>
+<p>The Water Bodies detection steps are depicted below:</p>
+<pre class="mermaid"><code>graph TB
+  A[STAC Items] --&gt; B
+  A[STAC Items] --&gt; C
+subgraph Process STAC item
+  B["crop(green)"] --&gt; D[Normalized difference];
+  C["crop(nir)"] --&gt; D[Normalized difference];
+  D --&gt; E[Otsu threshold]
+end
+  E --&gt; F[Create STAC]</code></pre>
+<p>The application takes a list of Sentinel-2 STAC items references, applies the crop over the area of interest for the radiometric bands green and NIR, the normalized difference, the Ostu threshold and finaly creates a STAC catalog and items for the generated results.</p>
+<p>Alice organizes the Application Package to include a macro workflow that reads the list of Sentinel-2 STAC items references, launches a sub-workflow to detect the water bodies and creates the STAC catalog:</p>
+<p><img alt="image" src="../water_bodies.png" title="water-bodies"/></p>
+<p>The sub-workflow applies the  <code>crop</code>, <code>Normalized difference</code>, <code>Otsu threshold</code> steps:</p>
+<p><img alt="image" src="../detect_water_body.png" title="detect-water-body"/></p>
+<p>The development and test dataset is made of two Sentinel-2 acquisitions:</p>
+<table>
+<thead>
+<tr>
+<th>Acquisitions</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Date</td>
+<td>2021-07-13</td>
+<td>2022-05-24</td>
+</tr>
+<tr>
+<td>URL</td>
+<td><a href="https://earth-search.aws.element84.com/v0/collections/sentinel-s2-l2a-cogs/items/S2B_10TFK_20210713_0_L2A">S2B_10TFK_20210713_0_L2A</a></td>
+<td><a href="https://earth-search.aws.element84.com/v0/collections/sentinel-s2-l2a-cogs/items/S2A_10TFK_20220524_0_L2A">S2A_10TFK_20220524_0_L2A</a></td>
+</tr>
+<tr>
+<td>Quicklook</td>
+<td><img alt="image" src="https://roda.sentinel-hub.com/sentinel-s2-l1c/tiles/10/T/FK/2021/7/13/0/preview.jpg"/></td>
+<td><img alt="image" src="https://roda.sentinel-hub.com/sentinel-s2-l1c/tiles/10/T/FK/2021/7/13/0/preview.jpg"/></td>
+</tr>
+</tbody>
+</table>
+<p>Alice uses an IDE to implement and test the application. </p>
+<p>Each <code>Command Line Tool</code> step such as <code>crop</code>, <code>Normalized difference</code>, <code>Otsu threshold</code> and <code>Create STAC</code> runs a Python script in a dedicated container.</p>
+<h4 id="hands-on">Hands-on<a class="headerlink" href="#hands-on" title="Permanent link">¶</a></h4>
+<p><a href="https://mybinder.org/v2/gh/cwl-for-eo/vscode-binder/master?urlpath=git-pull%3Frepo%3Dhttps%253A%252F%252Fgithub.com%252FTerradue%252Fogc-eo-application-package-hands-on%26urlpath%3D%252Fvscode%252F%253Ffolder%253D%252Fhome%252Fjovyan%252Fogc-eo-application-package-hands-on%252Fwater-bodies%26branch%3Dmaster" target="_blank"><img alt="Run the hands-on on Code Server" src="https://img.shields.io/badge/launch-code%20server-lightgrey"/></a> </p>
+<p>Once the Code Server instance is up, open a new Terminal and create the Python environments to run the Application Package steps:</p>
+<p><div class="highlight"><pre><span></span><code><span class="go">mamba create -c conda-forge -y -p /srv/conda/envs/env_crop  gdal click pystac </span>
+<span class="go">mamba create -c conda-forge -y -p /srv/conda/envs/env_norm_diff click gdal  </span>
+<span class="go">mamba create -c conda-forge -y -p /srv/conda/envs/env_otsu gdal scikit-image click </span>
+<span class="go">mamba create -c conda-forge -y -p /srv/conda/envs/env_stac click pystac python=3.9 pip &amp;&amp; \</span>
+<span class="go">    /srv/conda/envs/env_stac/bin/pip install rio_stac</span>
+<span class="go">mamba clean --all -f -y</span>
+</code></pre></div>
+This configuration step takes a few minutes to complete and prints:</p>
+<div class="highlight"><pre><span></span><code>jovyan@jupyter-cwl-2dfor-2deo-2dvscode-2dbinder-2dv5n1yyn4:~/ogc-eo-application-package-hands-on/water-bodies$ mamba create -c conda-forge -y -p /srv/conda/envs/env_crop  gdal click pystac 
+-forge -y -p /srv/conda/envs/env_norm_diff click gdal  
+mamba create -c conda-forge -y -p /srv/conda/envs/env_otsu gdal scikit-image click 
+mamba create -c conda-forge -y -p /srv/conda/envs/env_stac click pystac python=3.9 pip &amp;&amp; \
+    /srv/conda/envs/env_stac/bin/pip install rio_stac
+mamba clean --all -f -y
+                  __    __    __    __
+                 /  \  /  \  /  \  /  \
+                /    \/    \/    \/    \
+███████████████/  /██/  /██/  /██/  /████████████████████████
+              /  / \   / \   / \   / \  \____
+             /  /   \_/   \_/   \_/   \    o \__,
+            / _/                       \_____/  `
+            |/
+        ███╗   ███╗ █████╗ ███╗   ███╗██████╗  █████╗
+        ████╗ ████║██╔══██╗████╗ ████║██╔══██╗██╔══██╗
+        ██╔████╔██║███████║██╔████╔██║██████╔╝███████║
+        ██║╚██╔╝██║██╔══██║██║╚██╔╝██║██╔══██╗██╔══██║
+        ██║ ╚═╝ ██║██║  ██║██║ ╚═╝ ██║██████╔╝██║  ██║
+        ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═════╝ ╚═╝  ╚═╝
+
+        mamba (1.2.0) supported by @QuantStack
+
+        GitHub:  https://github.com/mamba-org/mamba
+        Twitter: https://twitter.com/QuantStack
+
+█████████████████████████████████████████████████████████████
+...
+
+...
+
+Will remove 1 package cache(s).
+</code></pre></div>
+<h4 id="code-inspection">Code inspection<a class="headerlink" href="#code-inspection" title="Permanent link">¶</a></h4>
+<p>Get yourself familiar with what the command line tools do when invoked.</p>
+<ol>
+<li>Inspect each of the command line tools <code>crop</code>, <code>norm_diff</code>, <code>otsu</code> and <code>stac</code> Python script</li>
+<li>Inspect each of the <code>Dockerfile</code> </li>
+</ol>
+<h4 id="application-package-execution">Application Package execution<a class="headerlink" href="#application-package-execution" title="Permanent link">¶</a></h4>
+<ol>
+<li>Go to <code>Terminal</code> to open a new terminal</li>
+<li>Run the water bodies detection Application Package with: </li>
+</ol>
+<div class="highlight"><pre><span></span><code>cwltool --no-container app-package.cwl#water_bodies params.yml &gt; out.json
+</code></pre></div>
+<p><code>cwltool</code> is a Common Workflow Language runner. </p>
+<p>The flag <code>--no-container</code> is used to instruct <code>cwltool</code> to use the local command-line tools instead of using the containers as Binder cannot launch containers.</p>
+<p><code>app-package.cwl#water_bodies</code> defines the CWL file to execute and instructs <code>cwltool</code> which element to run. Here it's the <code>Workflow</code> with the id <code>water_bodies</code>.</p>
+<p>The file <code>params.yml</code> contains the parameters:</p>
+<div class="highlight"><pre><span></span><code>stac_items:
+- "https://earth-search.aws.element84.com/v0/collections/sentinel-s2-l2a-cogs/items/S2B_10TFK_20210713_0_L2A"
+- "https://earth-search.aws.element84.com/v0/collections/sentinel-s2-l2a-cogs/items/S2A_10TFK_20220524_0_L2A"
+
+aoi: "-121.399,39.834,-120.74,40.472"
+epsg: "EPSG:4326"
+</code></pre></div>
+<p>The <code>cwltool</code> execution prints: </p>
+<div class="highlight"><pre><span></span><code><span class="gp">jovyan@jupyter-cwl-2dfor-2deo-2dvscode-2dbinder-2dv5n1yyn4:~/ogc-eo-application-package-hands-on/water-bodies$ </span>cwltool<span class="w"> </span>--no-container<span class="w"> </span>app-package.cwl#water_bodies<span class="w"> </span>params.yml<span class="w"> </span>&gt;<span class="w"> </span>out.json
+<span class="go">INFO /srv/conda/envs/notebook/bin/cwltool 3.1.20221201130942</span>
+<span class="go">INFO Resolved 'app-package.cwl#water_bodies' to 'file:///home/jovyan/ogc-eo-application-package-hands-on/water-bodies/app-package.cwl#water_bodies'</span>
+<span class="go">INFO [workflow ] start</span>
+<span class="go">INFO [workflow ] starting step node_water_bodies</span>
+<span class="go">INFO [step node_water_bodies] start</span>
+<span class="go">INFO [workflow node_water_bodies] start</span>
+<span class="go">INFO [workflow node_water_bodies] starting step node_crop</span>
+<span class="go">INFO [step node_crop] start</span>
+<span class="go">INFO [job node_crop] /tmp/hgboee9w$ python \</span>
+<span class="go">    -m \</span>
+<span class="go">    app \</span>
+<span class="go">    --aoi \</span>
+<span class="go">    -121.399,39.834,-120.74,40.472 \</span>
+<span class="go">    --band \</span>
+<span class="go">    green \</span>
+<span class="go">    --epsg \</span>
+<span class="go">    EPSG:4326 \</span>
+<span class="go">    --input-item \</span>
+<span class="go">    https://earth-search.aws.element84.com/v0/collections/sentinel-s2-l2a-cogs/items/S2B_10TFK_20210713_0_L2A</span>
+<span class="go">INFO [job node_crop] Max memory used: 67MiB</span>
+<span class="go">INFO [job node_crop] completed success</span>
+<span class="go">...</span>
+
+<span class="go">...</span>
+<span class="go">INFO [workflow ] starting step node_stac</span>
+<span class="go">INFO [step node_stac] start</span>
+<span class="go">INFO [job node_stac] /tmp/l9b37lie$ python \</span>
+<span class="go">    -m \</span>
+<span class="go">    app \</span>
+<span class="go">    --input-item \</span>
+<span class="go">    https://earth-search.aws.element84.com/v0/collections/sentinel-s2-l2a-cogs/items/S2B_10TFK_20210713_0_L2A \</span>
+<span class="go">    --water-body \</span>
+<span class="go">    /tmp/3_ithdmj/stg6a24fafc-7f9f-498a-b0c8-259811c7c959/otsu.tif \</span>
+<span class="go">    --input-item \</span>
+<span class="go">    https://earth-search.aws.element84.com/v0/collections/sentinel-s2-l2a-cogs/items/S2A_10TFK_20220524_0_L2A \</span>
+<span class="go">    --water-body \</span>
+<span class="go">    /tmp/3_ithdmj/stg5a6afa0d-1926-4256-83f1-c5f7ba4edeab/otsu.tif</span>
+<span class="go">INFO [job node_stac] Max memory used: 47MiB</span>
+<span class="go">INFO [job node_stac] completed success</span>
+<span class="go">INFO [step node_stac] completed success</span>
+<span class="go">INFO [workflow ] completed success</span>
+<span class="go">INFO Final process status is success</span>
+</code></pre></div>
+<p>Once the workflow execution is completed, there's a folder with the results generated.</p>
+<p>The JSON file <code>out.json</code> is a manifest containing the listing of the results included in that folder:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">"stac_catalog"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"file:///home/jovyan/ogc-eo-application-package-hands-on/water-bodies/l9b37lie"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"basename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"l9b37lie"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"class"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Directory"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"listing"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">"class"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Directory"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"file:///home/jovyan/ogc-eo-application-package-hands-on/water-bodies/l9b37lie/S2A_10TFK_20220524_0_L2A"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"basename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"S2A_10TFK_20220524_0_L2A"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"listing"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">"class"</span><span class="p">:</span><span class="w"> </span><span class="s2">"File"</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"file:///home/jovyan/ogc-eo-application-package-hands-on/water-bodies/l9b37lie/S2A_10TFK_20220524_0_L2A/S2A_10TFK_20220524_0_L2A.json"</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">"basename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"S2A_10TFK_20220524_0_L2A.json"</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">"checksum"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sha1$de27e30c1e40ac0c2cb41f66f25e0258f4a6fdbc"</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">"size"</span><span class="p">:</span><span class="w"> </span><span class="mi">4870</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/jovyan/ogc-eo-application-package-hands-on/water-bodies/l9b37lie/S2A_10TFK_20220524_0_L2A/S2A_10TFK_20220524_0_L2A.json"</span>
+<span class="w">                    </span><span class="p">},</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">"class"</span><span class="p">:</span><span class="w"> </span><span class="s2">"File"</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"file:///home/jovyan/ogc-eo-application-package-hands-on/water-bodies/l9b37lie/S2A_10TFK_20220524_0_L2A/otsu.tif"</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">"basename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"otsu.tif"</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">"checksum"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sha1$f8b7daf9c86b0271a813a0948e0edb947e5f2773"</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">"size"</span><span class="p">:</span><span class="w"> </span><span class="mi">175932</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/jovyan/ogc-eo-application-package-hands-on/water-bodies/l9b37lie/S2A_10TFK_20220524_0_L2A/otsu.tif"</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">],</span>
+<span class="w">                </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/jovyan/ogc-eo-application-package-hands-on/water-bodies/l9b37lie/S2A_10TFK_20220524_0_L2A"</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">"class"</span><span class="p">:</span><span class="w"> </span><span class="s2">"File"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"file:///home/jovyan/ogc-eo-application-package-hands-on/water-bodies/l9b37lie/catalog.json"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"basename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"catalog.json"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"checksum"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sha1$f7214df9b2be4df8b704b4bbe73cdf76b30b0ca6"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"size"</span><span class="p">:</span><span class="w"> </span><span class="mi">525</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/jovyan/ogc-eo-application-package-hands-on/water-bodies/l9b37lie/catalog.json"</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">"class"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Directory"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"file:///home/jovyan/ogc-eo-application-package-hands-on/water-bodies/l9b37lie/S2B_10TFK_20210713_0_L2A"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"basename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"S2B_10TFK_20210713_0_L2A"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"listing"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">"class"</span><span class="p">:</span><span class="w"> </span><span class="s2">"File"</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"file:///home/jovyan/ogc-eo-application-package-hands-on/water-bodies/l9b37lie/S2B_10TFK_20210713_0_L2A/S2B_10TFK_20210713_0_L2A.json"</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">"basename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"S2B_10TFK_20210713_0_L2A.json"</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">"checksum"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sha1$fe3860a19aabba59561d1410070e1a2378769b4a"</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">"size"</span><span class="p">:</span><span class="w"> </span><span class="mi">4870</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/jovyan/ogc-eo-application-package-hands-on/water-bodies/l9b37lie/S2B_10TFK_20210713_0_L2A/S2B_10TFK_20210713_0_L2A.json"</span>
+<span class="w">                    </span><span class="p">},</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">"class"</span><span class="p">:</span><span class="w"> </span><span class="s2">"File"</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"file:///home/jovyan/ogc-eo-application-package-hands-on/water-bodies/l9b37lie/S2B_10TFK_20210713_0_L2A/otsu.tif"</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">"basename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"otsu.tif"</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">"checksum"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sha1$4bc4935a02b7de7d2460d05b3a3c4bf92557b8d3"</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">"size"</span><span class="p">:</span><span class="w"> </span><span class="mi">99746</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/jovyan/ogc-eo-application-package-hands-on/water-bodies/l9b37lie/S2B_10TFK_20210713_0_L2A/otsu.tif"</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">],</span>
+<span class="w">                </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/jovyan/ogc-eo-application-package-hands-on/water-bodies/l9b37lie/S2B_10TFK_20210713_0_L2A"</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/jovyan/ogc-eo-application-package-hands-on/water-bodies/l9b37lie"</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h4 id="result-inspection">Result inspection<a class="headerlink" href="#result-inspection" title="Permanent link">¶</a></h4>
+<p>If you're running the Hands-on on Binder, you can inspect and plt the results with a Jupyter Notebook.</p>
+<p>The results are inspected and visualized with the <code>visualization.ipynb</code> notebook on <a href="../../../../lab">JupyterLab</a> by running all cells. This notebook uses pystac to access the geotiffs produced, leafmap to plot the tiles served by a local tile server.</p>
+<p>Technically, the notebook parses the results produced looking for the STAC Catalog file <code>catalog.json</code> and adds the STAC items' <code>data</code> asset on the map.</p>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+<script src="../../assets/javascripts/bundle.51d95adb.min.js"></script>
+<script src="../../javascripts/config.js"></script>
+<script src="https://unpkg.com/mermaid@8.9.1/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>
