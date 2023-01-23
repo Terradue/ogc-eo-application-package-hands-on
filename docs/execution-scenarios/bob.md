@@ -25,6 +25,199 @@ Bob uses an input dataset with two Sentinel-2 acquisitions:
 | URL          	| [S2B_10TFK_20210713_0_L2A](https://earth-search.aws.element84.com/v0/collections/sentinel-s2-l2a-cogs/items/S2B_10TFK_20210713_0_L2A) 	| [S2A_10TFK_20220524_0_L2A](https://earth-search.aws.element84.com/v0/collections/sentinel-s2-l2a-cogs/items/S2A_10TFK_20220524_0_L2A) 	|
 | Quicklook    	| ![image](https://roda.sentinel-hub.com/sentinel-s2-l1c/tiles/10/T/FK/2021/7/13/0/preview.jpg)                                         	| ![image](https://roda.sentinel-hub.com/sentinel-s2-l1c/tiles/10/T/FK/2021/7/13/0/preview.jpg)                                         	|
 
+#### Hands-on
+
+<a href="https://mybinder.org/v2/gh/cwl-for-eo/vscode-binder/master?urlpath=git-pull%3Frepo%3Dhttps%253A%252F%252Fgithub.com%252FTerradue%252Fogc-eo-application-package-hands-on%26urlpath%3D%252Fvscode%252F%253Ffolder%253D%252Fhome%252Fjovyan%252Fogc-eo-application-package-hands-on%252Fscripted-execution%26branch%3Dmaster" target="_blank"><img src="https://img.shields.io/badge/launch-code%20server-lightgrey" alt="Run the hands-on on Code Server" ></img></a> 
+
+Once the Code Server instance is up, open a new Terminal and create the Python environments to run the Application Package steps:
+
+```console
+mamba create -c conda-forge -y -p /srv/conda/envs/env_crop  gdal click pystac 
+mamba create -c conda-forge -y -p /srv/conda/envs/env_norm_diff click gdal  
+mamba create -c conda-forge -y -p /srv/conda/envs/env_otsu gdal scikit-image click 
+mamba create -c conda-forge -y -p /srv/conda/envs/env_stac click pystac python=3.9 pip && \
+    /srv/conda/envs/env_stac/bin/pip install rio_stac
+mamba clean --all -f -y
+```
+This configuration step takes a few minutes to complete and prints:
+
+```
+jovyan@jupyter-cwl-2dfor-2deo-2dvscode-2dbinder-2dv5n1yyn4:~/ogc-eo-application-package-hands-on/water-bodies$ mamba create -c conda-forge -y -p /srv/conda/envs/env_crop  gdal click pystac 
+-forge -y -p /srv/conda/envs/env_norm_diff click gdal  
+mamba create -c conda-forge -y -p /srv/conda/envs/env_otsu gdal scikit-image click 
+mamba create -c conda-forge -y -p /srv/conda/envs/env_stac click pystac python=3.9 pip && \
+    /srv/conda/envs/env_stac/bin/pip install rio_stac
+mamba clean --all -f -y
+                  __    __    __    __
+                 /  \  /  \  /  \  /  \
+                /    \/    \/    \/    \
+███████████████/  /██/  /██/  /██/  /████████████████████████
+              /  / \   / \   / \   / \  \____
+             /  /   \_/   \_/   \_/   \    o \__,
+            / _/                       \_____/  `
+            |/
+        ███╗   ███╗ █████╗ ███╗   ███╗██████╗  █████╗
+        ████╗ ████║██╔══██╗████╗ ████║██╔══██╗██╔══██╗
+        ██╔████╔██║███████║██╔████╔██║██████╔╝███████║
+        ██║╚██╔╝██║██╔══██║██║╚██╔╝██║██╔══██╗██╔══██║
+        ██║ ╚═╝ ██║██║  ██║██║ ╚═╝ ██║██████╔╝██║  ██║
+        ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═════╝ ╚═╝  ╚═╝
+
+        mamba (1.2.0) supported by @QuantStack
+
+        GitHub:  https://github.com/mamba-org/mamba
+        Twitter: https://twitter.com/QuantStack
+
+█████████████████████████████████████████████████████████████
+...
+
+...
+
+Will remove 1 package cache(s).
+```
+
+Open a Terminal and run:
+
+```
+python bob.py
+```
+
+This will print:
+
+```
+INFO bob.py 3.1.20221201130942
+INFO [workflow ] start
+INFO [workflow ] starting step node_water_bodies
+INFO [step node_water_bodies] start
+INFO [workflow node_water_bodies] start
+INFO [workflow node_water_bodies] starting step node_crop
+INFO [step node_crop] start
+INFO [job node_crop] /tmp/6n8apsoq$ python \
+    -m \
+    app \
+    --aoi \
+    -121.399,39.834,-120.74,40.472 \
+    --band \
+    green \
+    --epsg \
+    EPSG:4326 \
+    --input-item \
+    https://earth-search.aws.element84.com/v0/collections/sentinel-s2-l2a-cogs/items/S2B_10TFK_20210713_0_L2A
+INFO [job node_crop] Max memory used: 67MiB
+INFO [job node_crop] completed success
+INFO [step node_crop] start
+INFO [job node_crop_2] /tmp/k_9lm8he$ python \
+    -m \
+    app \
+    --aoi \
+    -121.399,39.834,-120.74,40.472 \
+    --band \
+    nir \
+    --epsg \
+    EPSG:4326 \
+    --input-item \
+    https://earth-search.aws.element84.com/v0/collections/sentinel-s2-l2a-cogs/items/S2B_10TFK_20210713_0_L2A
+INFO [job node_crop_2] Max memory used: 66MiB
+INFO [job node_crop_2] completed success
+INFO [step node_crop] completed success
+INFO [workflow node_water_bodies] starting step node_normalized_difference
+INFO [step node_normalized_difference] start
+INFO [job node_normalized_difference] /tmp/gksmem7n$ python \
+    -m \
+    app \
+    /tmp/17glpf06/stgb6188a88-313c-4c6c-a97b-b485c4394cb3/crop_green.tif \
+    /tmp/17glpf06/stgadfebda3-fff9-4bd4-bb96-2b79c812bf23/crop_nir.tif
+INFO [job node_normalized_difference] Max memory used: 273MiB
+INFO [job node_normalized_difference] completed success
+INFO [step node_normalized_difference] completed success
+INFO [workflow node_water_bodies] starting step node_otsu
+INFO [step node_otsu] start
+INFO [job node_otsu] /tmp/ir5klrom$ python \
+    -m \
+    app \
+    /tmp/no594xke/stg7ff1069c-3ee3-4d42-bcd7-ccf82205eb58/norm_diff.tif
+INFO [job node_otsu] Max memory used: 60MiB
+INFO [job node_otsu] completed success
+INFO [step node_otsu] completed success
+INFO [workflow node_water_bodies] completed success
+INFO [step node_water_bodies] start
+INFO [workflow node_water_bodies_2] start
+INFO [workflow node_water_bodies_2] starting step node_crop_2
+INFO [step node_crop_2] start
+INFO [job node_crop_3] /tmp/0ocyq5md$ python \
+    -m \
+    app \
+    --aoi \
+    -121.399,39.834,-120.74,40.472 \
+    --band \
+    green \
+    --epsg \
+    EPSG:4326 \
+    --input-item \
+    https://earth-search.aws.element84.com/v0/collections/sentinel-s2-l2a-cogs/items/S2A_10TFK_20220524_0_L2A
+INFO [job node_crop_3] Max memory used: 67MiB
+INFO [job node_crop_3] completed success
+INFO [step node_crop_2] start
+INFO [job node_crop_4] /tmp/u0uvyo87$ python \
+    -m \
+    app \
+    --aoi \
+    -121.399,39.834,-120.74,40.472 \
+    --band \
+    nir \
+    --epsg \
+    EPSG:4326 \
+    --input-item \
+    https://earth-search.aws.element84.com/v0/collections/sentinel-s2-l2a-cogs/items/S2A_10TFK_20220524_0_L2A
+INFO [job node_crop_4] Max memory used: 66MiB
+INFO [job node_crop_4] completed success
+INFO [step node_crop_2] completed success
+INFO [workflow node_water_bodies_2] starting step node_normalized_difference_2
+INFO [step node_normalized_difference_2] start
+INFO [job node_normalized_difference_2] /tmp/klj25q69$ python \
+    -m \
+    app \
+    /tmp/it1t00w7/stgad3e6991-667e-4726-894f-7719d56020de/crop_green.tif \
+    /tmp/it1t00w7/stgc43022ad-babd-479e-98c2-61f5c1bd25fa/crop_nir.tif
+INFO [job node_normalized_difference_2] Max memory used: 781MiB
+INFO [job node_normalized_difference_2] completed success
+INFO [step node_normalized_difference_2] completed success
+INFO [workflow node_water_bodies_2] starting step node_otsu_2
+INFO [step node_otsu_2] start
+INFO [job node_otsu_2] /tmp/3p5hbt32$ python \
+    -m \
+    app \
+    /tmp/ftopy3mv/stgc969ba01-2f50-4035-b946-d693680cbb7c/norm_diff.tif
+INFO [job node_otsu_2] Max memory used: 58MiB
+INFO [job node_otsu_2] completed success
+INFO [step node_otsu_2] completed success
+INFO [workflow node_water_bodies_2] completed success
+INFO [step node_water_bodies] completed success
+INFO [workflow ] starting step node_stac
+INFO [step node_stac] start
+INFO [job node_stac] /tmp/37zde3p4$ python \
+    -m \
+    app \
+    --input-item \
+    https://earth-search.aws.element84.com/v0/collections/sentinel-s2-l2a-cogs/items/S2B_10TFK_20210713_0_L2A \
+    --water-body \
+    /tmp/fd0l65gi/stg9de20acd-1158-4ac3-be6d-a30e00996fd3/otsu.tif \
+    --input-item \
+    https://earth-search.aws.element84.com/v0/collections/sentinel-s2-l2a-cogs/items/S2A_10TFK_20220524_0_L2A \
+    --water-body \
+    /tmp/fd0l65gi/stg8bc3674f-f313-4f79-9dee-5a3bb454f2fb/otsu.tif
+INFO [job node_stac] Max memory used: 58MiB
+INFO [job node_stac] completed success
+INFO [step node_stac] completed success
+INFO [workflow ] completed success
+INFO Final process status is success
+* <Catalog id=catalog>
+  * <Item id=S2B_10TFK_20210713_0_L2A>
+  * <Item id=S2A_10TFK_20220524_0_L2A>
+```
+
+#### Execution with containers - requires docker
+ 
 The file `params.yml` contains the parameters:
 
 ```
