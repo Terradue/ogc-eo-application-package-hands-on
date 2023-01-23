@@ -21,7 +21,8 @@ nav:
       - execution-scenarios/bob.md
       - execution-scenarios/eric.md
     
-    
+repo_url: https://github.com/Terradue/ogc-eo-application-package-hands-on.git
+
 plugins:
   - mermaid2
   - search
