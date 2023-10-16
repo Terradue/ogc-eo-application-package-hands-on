@@ -18,3 +18,5 @@ data-access
 ls8-data
 visualization-jvsc*
 *.pyc
+runs
+results.json

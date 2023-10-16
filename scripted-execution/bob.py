@@ -17,19 +17,25 @@ params = [
 
 args = []
 
-args.extend(["--no-container"])
-args.append(f"https://github.com/Terradue/ogc-eo-application-package-hands-on/releases/download/1.1.6/app-water-bodies.1.1.6.cwl#{workflow_id}")
+args.extend(["--no-container", "--parallel", "--outdir", "runs"])
 
-stream = StringIO()
+#args.append(f"https://github.com/Terradue/ogc-eo-application-package-hands-on/releases/download/1.1.6/app-water-bodies.1.1.6.cwl#{workflow_id}")
+args.append(f"water-bodies/app-package.cwl#{workflow_id}")
+
+stream_out = StringIO()
+stream_err = StringIO()
 
 res = main(
     [ *args, *params],
-    stdout=stream,
+    stdout=stream_out,
 )
 
 assert(res == 0)
 
-stdout = json.loads(stream.getvalue())
+stdout = json.loads(stream_out.getvalue())
+
+with open('results.json', 'w') as f:
+    json.dump(stdout, f, indent=2)
 
 for entry in stdout["stac_catalog"]["listing"]:
     if "catalog.json" in entry["basename"]:

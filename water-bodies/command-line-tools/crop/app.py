@@ -3,6 +3,7 @@ from urllib.parse import urlparse
 from osgeo import gdal
 import pystac
 
+gdal.UseExceptions()
 settings = None
 
 

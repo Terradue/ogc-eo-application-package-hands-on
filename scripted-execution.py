@@ -30,7 +30,7 @@ params = [
 args = []
 
 args.extend(["--no-container"])
-args.append(f"app-package.cwl#{workflow_id}")
+args.append(f"https://github.com/Terradue/ogc-eo-application-package-hands-on/releases/download/1.1.6/app-water-bodies.1.1.6.cwl#{workflow_id}")
 
 stream = StringIO()
 

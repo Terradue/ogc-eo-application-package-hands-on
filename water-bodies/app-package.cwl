@@ -2,7 +2,7 @@ cwlVersion: v1.0
 
 $namespaces:
   s: https://schema.org/
-s:softwareVersion: 1.1.7
+s:softwareVersion: 1.1.8
 schemas:
 - http://schema.org/version/9.0/schemaorg-current-http.rdf
 
@@ -125,7 +125,7 @@ $graph:
     EnvVarRequirement:
       envDef: 
         PATH: /srv/conda/envs/env_crop/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-        PYTHONPATH: /home/jovyan/ogc-eo-application-package-hands-on/water-bodies/command-line-tools/crop:/home/jovyan/water-bodies/command-line-tools/crop:/workspaces/vscode-binder/command-line-tools/crop
+        PYTHONPATH: /workspaces/ogc-eo-application-package-hands-on/water-bodies/command-line-tools/crop:/home/jovyan/ogc-eo-application-package-hands-on/water-bodies/command-line-tools/crop:/home/jovyan/water-bodies/command-line-tools/crop:/workspaces/vscode-binder/command-line-tools/crop
         PROJ_LIB: /srv/conda/envs/env_crop/share/proj/
     ResourceRequirement:
       coresMax: 2
