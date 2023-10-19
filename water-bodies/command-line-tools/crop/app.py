@@ -1,3 +1,4 @@
+import os
 import click
 from urllib.parse import urlparse
 from osgeo import gdal
@@ -42,6 +43,7 @@ def get_asset(item, common_name):
 def vsi_href(uri):
 
     parsed = urlparse(uri)
+
     if parsed.scheme.startswith("http"):
         return "/vsicurl/{}".format(uri)
     elif parsed.scheme.startswith("file"):
@@ -62,7 +64,7 @@ def vsi_href(uri):
 @click.option(
     "--input-item",
     "item_url",
-    help="STAC Item URL",
+    help="STAC Item URL or staged STAC catalog",
     required=True,
 )
 @click.option(
@@ -85,14 +87,18 @@ def vsi_href(uri):
 )
 def crop(item_url, aoi, band, epsg):
 
-    item = pystac.read_file(item_url)
+    if os.path.isdir(item_url):
+        catalog = pystac.read_file(os.path.join(item_url, "catalog.json"))
+        item = next(catalog.get_items())
+    else:
+        item = pystac.read_file(item_url)
 
     asset = get_asset(item, band)
 
     if not asset:
         raise ValueError(f"Common band name {band} not found in the assets")
 
-    asset_href = vsi_href(asset.href)
+    asset_href = vsi_href(asset.get_absolute_href())
 
     bbox = aoi2box(aoi)
 

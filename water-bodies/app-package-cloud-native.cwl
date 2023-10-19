@@ -30,7 +30,7 @@ $graph:
     stac_items:
       label: Sentinel-2 STAC items
       doc: list of Sentinel-2 COG STAC items
-      type: Directory[]
+      type: string[]
 
   outputs:
   - id: stac_catalog
@@ -81,7 +81,7 @@ $graph:
       default: ["green", "nir"]
     item:
       doc: STAC item
-      type: Directory
+      type: string
 
   outputs:
     - id: detected_water_body
@@ -139,7 +139,7 @@ $graph:
   arguments: []
   inputs:
     item:
-      type: Directory
+      type: string
       inputBinding:
         prefix: --input-item
     aoi:
