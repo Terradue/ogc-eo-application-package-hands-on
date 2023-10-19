@@ -246,7 +246,7 @@ $graph:
     item:
       type:
         type: array
-        items: string
+        items: Directory
         inputBinding:
           prefix: --input-item
           
