@@ -28,8 +28,14 @@ def to_stac(item_urls, water_bodies):
     cat = pystac.Catalog(id="catalog", description="water-bodies")
 
     for index, item_url in enumerate(item_urls):
+        
+        if os.path.isdir(item_url):
+            catalog = pystac.read_file(os.path.join(item_url, "catalog.json"))
+            item = next(catalog.get_items())
+        else:
+            item = pystac.read_file(item_url)
 
-        item = pystac.read_file(item_url)
+        
         water_body = water_bodies[index]
 
         os.mkdir(item.id)
