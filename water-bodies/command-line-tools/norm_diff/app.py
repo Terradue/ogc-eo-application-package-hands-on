@@ -1,7 +1,9 @@
+"""Normalized difference"""
 import click
 from osgeo import gdal
 import numpy as np
 
+gdal.UseExceptions()
 
 @click.command(
     short_help="Normalized difference",
@@ -9,7 +11,8 @@ import numpy as np
 )
 @click.argument("rasters", nargs=2)
 def normalized_difference(rasters):
-
+    """Performs a normalized difference"""
+    
     # Allow division by zero
     np.seterr(divide="ignore", invalid="ignore")
 
@@ -39,7 +42,6 @@ def normalized_difference(rasters):
 
     dst_ds = None
     ds1 = ds2 = None
-
 
 if __name__ == "__main__":
     normalized_difference()

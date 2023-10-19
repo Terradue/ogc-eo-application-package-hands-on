@@ -1,20 +1,21 @@
+"""Crop a STAC Item asset defined with its common band name"""
 import os
-import click
 from urllib.parse import urlparse
+import click
 from osgeo import gdal
 import pystac
 
 gdal.UseExceptions()
-settings = None
+SETTINGS = None
 
 
 def aoi2box(aoi):
-
+    """Converts an area of interest expressed as a bounding box to a list of floats"""
     return [float(c) for c in aoi.split(",")]
 
 
 def get_common_name(asset):
-
+    """Returns the common band name of a STAC Item asset"""
     if "eo:bands" in asset.to_dict().keys():
         if "common_name" in asset.to_dict()["eo:bands"][0].keys():
             return asset.to_dict()["eo:bands"][0]["common_name"]
@@ -23,9 +24,8 @@ def get_common_name(asset):
 
 
 def get_asset(item, common_name):
-
+    """Returns the asset of a STAC Item defined with its common band name"""
     for _, asset in item.get_assets().items():
-
         if not "data" in asset.to_dict()["roles"]:
             continue
 
@@ -41,20 +41,21 @@ def get_asset(item, common_name):
 
 
 def vsi_href(uri):
-
+    """Returns the VSI path of a URI"""
     parsed = urlparse(uri)
 
     if parsed.scheme.startswith("http"):
-        return "/vsicurl/{}".format(uri)
-    elif parsed.scheme.startswith("file"):
+        return f"/vsicurl/{uri}"
+    if parsed.scheme.startswith("file"):
         return uri.replace("file://", "")
-    elif parsed.scheme.startswith("s3"):
-        if settings:
-            for key, value in settings._asdict().items():
+
+    if parsed.scheme.startswith("s3"):
+        if SETTINGS:
+            for key, value in SETTINGS._asdict().items():
                 gdal.SetConfigOption(key, value)
-        return "/vsis3/{}".format(uri.strip("s3://"))
-    else:
-        return uri
+        return f"/vsis3/{uri.strip('s3://')}"
+
+    return uri
 
 
 @click.command(
@@ -86,7 +87,7 @@ def vsi_href(uri):
     required=True,
 )
 def crop(item_url, aoi, band, epsg):
-
+    """Crops a STAC Item asset defined with its common band name"""
     if os.path.isdir(item_url):
         catalog = pystac.read_file(os.path.join(item_url, "catalog.json"))
         item = next(catalog.get_items())

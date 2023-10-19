@@ -1,11 +1,12 @@
-from skimage.filters import threshold_otsu
+"""Command line tool to apply the Otsu threshold to a raster"""
 import click
-from osgeo import gdal
 import numpy as np
+from osgeo import gdal
+from skimage.filters import threshold_otsu
 
 
 def threshold(data):
-
+    """Returns the Otsu threshold of a numpy array"""
     return data > threshold_otsu(data[np.isfinite(data)])
 
 
@@ -15,7 +16,7 @@ def threshold(data):
 )
 @click.argument("raster", nargs=1)
 def otsu(raster):
-
+    """Applies the Otsu threshold"""
     ds = gdal.Open(raster)
 
     driver = gdal.GetDriverByName("GTiff")

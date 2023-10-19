@@ -1,8 +1,9 @@
+"""Creates a STAC catalog with the detected water bodies""" ""
+import os
+import shutil
 import click
 import pystac
 import rio_stac
-import shutil
-import os
 
 
 @click.command(
@@ -24,18 +25,16 @@ import os
     multiple=True,
 )
 def to_stac(item_urls, water_bodies):
-
+    """Creates a STAC catalog with the detected water bodies"""
     cat = pystac.Catalog(id="catalog", description="water-bodies")
 
     for index, item_url in enumerate(item_urls):
-        
         if os.path.isdir(item_url):
             catalog = pystac.read_file(os.path.join(item_url, "catalog.json"))
             item = next(catalog.get_items())
         else:
             item = pystac.read_file(item_url)
 
-        
         water_body = water_bodies[index]
 
         os.mkdir(item.id)
@@ -57,11 +56,6 @@ def to_stac(item_urls, water_bodies):
     cat.normalize_and_save(
         root_href="./", catalog_type=pystac.CatalogType.SELF_CONTAINED
     )
-
-    # for index, water_body in enumerate(water_bodies):
-    #     item = pystac.read_file(item_urls[index])
-
-    #     shutil.copy(water_body, item.id)
 
 
 if __name__ == "__main__":
