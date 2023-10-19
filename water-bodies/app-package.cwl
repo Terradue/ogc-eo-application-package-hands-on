@@ -2,7 +2,7 @@ cwlVersion: v1.0
 
 $namespaces:
   s: https://schema.org/
-s:softwareVersion: 1.2.0
+s:softwareVersion: 1.2.1
 schemas:
 - http://schema.org/version/9.0/schemaorg-current-http.rdf
 
@@ -29,7 +29,7 @@ $graph:
       default: "EPSG:4326"
     stac_items:
       label: Sentinel-2 STAC items
-      doc: list of Sentinel-2 COG STAC items
+      doc: list of staged Sentinel-2 COG STAC items
       type: Directory[]
 
   outputs:
@@ -80,7 +80,7 @@ $graph:
       type: string[]
       default: ["green", "nir"]
     item:
-      doc: STAC item
+      doc: staged STAC item
       type: Directory
 
   outputs:
