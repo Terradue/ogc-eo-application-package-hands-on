@@ -4,6 +4,7 @@ import numpy as np
 from osgeo import gdal
 from skimage.filters import threshold_otsu
 
+gdal.UseExceptions()
 
 def threshold(data):
     """Returns the Otsu threshold of a numpy array"""

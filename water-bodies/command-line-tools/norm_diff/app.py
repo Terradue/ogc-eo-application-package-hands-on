@@ -1,6 +1,7 @@
 """Normalized difference"""
 import click
 from osgeo import gdal
+import cv2
 import numpy as np
 
 gdal.UseExceptions()
@@ -19,6 +20,8 @@ def normalized_difference(rasters):
     ds1 = gdal.Open(rasters[0])
     ds2 = gdal.Open(rasters[1])
 
+    
+
     driver = gdal.GetDriverByName("GTiff")
 
     dst_ds = driver.Create(
@@ -35,6 +38,16 @@ def normalized_difference(rasters):
 
     array1 = ds1.GetRasterBand(1).ReadAsArray().astype(float)
     array2 = ds2.GetRasterBand(1).ReadAsArray().astype(float)
+
+    # resizes the arrays to the biggest common size
+    if array1.shape != array2.shape:
+        max_x = max(array1.shape[0], array2.shape[0])
+        max_y = max(array1.shape[1], array2.shape[1])
+        
+        resized_array1 = cv2.resize(array1, (max_x, max_y), interpolation=cv2.INTER_NEAREST)
+
+        array1 = array1[:min_x, :min_y]
+        array2 = array2[:min_x, :min_y]
 
     norm_diff = (array1 - array2) / (array1 + array2)
 

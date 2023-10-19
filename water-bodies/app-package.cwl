@@ -2,7 +2,7 @@ cwlVersion: v1.0
 
 $namespaces:
   s: https://schema.org/
-s:softwareVersion: 1.2.1
+s:softwareVersion: 1.3.0
 schemas:
 - http://schema.org/version/9.0/schemaorg-current-http.rdf
 
@@ -31,6 +31,11 @@ $graph:
       label: Sentinel-2 STAC items
       doc: list of staged Sentinel-2 COG STAC items
       type: Directory[]
+    bands: 
+      label: bands used for the NDWI
+      doc: bands used for the NDWI
+      type: string[]
+      default: ["green", "nir"]
 
   outputs:
   - id: stac_catalog
@@ -45,6 +50,7 @@ $graph:
         item: stac_items
         aoi: aoi
         epsg: epsg
+        bands: bands
       out:
       - detected_water_body
       scatter: item
@@ -78,7 +84,6 @@ $graph:
     bands: 
       doc: bands used for the NDWI
       type: string[]
-      default: ["green", "nir"]
     item:
       doc: staged STAC item
       type: Directory
@@ -96,8 +101,7 @@ $graph:
         item: item
         aoi: aoi
         epsg: epsg
-        band: 
-          default: ["green", "nir"]
+        band: bands 
       out:
         - cropped
       scatter: band
