@@ -1,0 +1,52 @@
+cwlVersion: v1.0
+doc: "Run Stars for staging input data"
+class: CommandLineTool
+hints:
+  DockerRequirement:
+    dockerPull: ghcr.io/terradue/stars:2.14.5
+  "cwltool:Secrets":
+    secrets: []
+
+id: stars
+requirements:
+  EnvVarRequirement:
+    envDef:
+      PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+  ResourceRequirement: {}
+  InlineJavascriptRequirement: {}
+  InitialWorkDirRequirement:
+        listing:
+        - entryname: stagein.sh 
+          entry: |- 
+            #!/bin/bash
+            set -x 
+            res=0
+            input='$( inputs.input )'
+            usersettings='$( inputs.usersettings.path )'
+
+            [ "\${input}" != "null" ] && {
+
+                IFS='#' read -r -a reference <<< '$( inputs.input )'
+                input_len=\${#reference[@]}
+
+                [[ \${input_len} == 2 ]] && {
+                    IFS=',' read -r -a assets <<< \${reference[1]}
+                    af=" "
+                    for asset in \${assets[@]}
+                    do 
+                      af="\${af} -af \${asset}"
+                    done
+                } || {
+                  af="--empty"
+                }
+                Stars copy -conf \${usersettings} -v -rel -r '4' \${af} -o ./ \${reference[0]}
+                res=$?
+            }
+            rm -fr stagein.sh
+            exit 0
+
+baseCommand: ['/bin/bash', 'stagein.sh']
+
+inputs: {}
+
+outputs: {}
