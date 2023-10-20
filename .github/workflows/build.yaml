@@ -207,3 +207,21 @@ jobs:
           asset_path: downloads/app-water-bodies-cloud-native.${{needs.version.outputs.app-version}}.cwl
           asset_name: app-water-bodies-cloud-native.${{needs.version.outputs.app-version}}.cwl
           asset_content_type: text/yaml
+      - name: upload linux artifact stage-in
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: downloads/stage-in.yaml
+          asset_name: stage-in.yaml
+          asset_content_type: text/yaml
+      - name: upload linux artifact stage-out
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: downloads/stage-out.yaml
+          asset_name: stage-out.yaml
+          asset_content_type: text/yaml
