@@ -14,10 +14,10 @@ hints:
     dockerPull: stac-asset:latest
   "cwltool:Secrets":
     secrets:
-    - AWS_SERVICEURL
-    - AWS_REGION
-    - AWS_ACCESS_KEY_ID
-    - AWS_SECRET_ACCESS_KEY
+    - aws_access_key_id
+    - aws_secret_access_key
+    - region_name
+    - endpoint_url
 
 inputs: 
   s3_bucket:

@@ -166,8 +166,8 @@ jobs:
       - run: yq -i eval '(.$graph[] | select (.id == "norm_diff") ).hints.DockerRequirement.dockerPull = "ghcr.io/terradue/ogc-eo-application-package-hands-on/norm_diff:${{needs.version.outputs.app-version}}"' water-bodies/app-package-cloud-native.cwl
       - run: yq -i eval '(.$graph[] | select (.id == "otsu") ).hints.DockerRequirement.dockerPull = "ghcr.io/terradue/ogc-eo-application-package-hands-on/otsu:${{needs.version.outputs.app-version}}"' water-bodies/app-package-cloud-native.cwl
       - run: yq -i eval '(.$graph[] | select (.id == "stac") ).hints.DockerRequirement.dockerPull = "ghcr.io/terradue/ogc-eo-application-package-hands-on/stac:${{needs.version.outputs.app-version}}"' water-bodies/app-package-cloud-native.cwl
-      - run: yq -i eval '(.requirements.DockerRequirement.dockerPull = "ghcr.io/terradue/ogc-eo-application-package-hands-on/stage:${{needs.version.outputs.app-version}}"' stage/stage-in.yaml 
-      - run: yq -i eval '(.requirements.DockerRequirement.dockerPull = "ghcr.io/terradue/ogc-eo-application-package-hands-on/stage:${{needs.version.outputs.app-version}}"' stage/stage-out.yaml
+      - run: yq -i eval '.requirements.DockerRequirement.dockerPull = "ghcr.io/terradue/ogc-eo-application-package-hands-on/stage:${{needs.version.outputs.app-version}}"' stage/stage-in.yaml 
+      - run: yq -i eval '.requirements.DockerRequirement.dockerPull = "ghcr.io/terradue/ogc-eo-application-package-hands-on/stage:${{needs.version.outputs.app-version}}"' stage/stage-out.yaml
       - run: mkdir downloads
       - run: cp water-bodies/app-package.cwl downloads/app-water-bodies.${{needs.version.outputs.app-version}}.cwl
       - run: cp water-bodies/app-package-cloud-native.cwl downloads/app-water-bodies-cloud-native.${{needs.version.outputs.app-version}}.cwl
