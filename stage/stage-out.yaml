@@ -2,16 +2,9 @@ cwlVersion: v1.0
 
 class: CommandLineTool
 id: stage-out
-
 doc: "Stage-out the results to S3"
 
-baseCommand: 
-- python
-- stage.py
-
 hints:
-  DockerRequirement:
-    dockerPull: stac-asset:latest
   "cwltool:Secrets":
     secrets:
     - aws_access_key_id
@@ -38,6 +31,10 @@ outputs:
       outputEval: ${  return "s3://" + inputs.s3_bucket + "/" + inputs.sub_path + "/catalog.json"; }
     type: string
 
+baseCommand: 
+- python
+- stage.py
+
 arguments:
   - $( inputs.wf_outputs.path )
   - $( inputs.s3_bucket )
@@ -48,6 +45,13 @@ arguments:
   - $( inputs.endpoint_url )
   
 requirements:
+  DockerRequirement:
+    dockerPull: stac-asset:latest
+  InlineJavascriptRequirement: {}
+  EnvVarRequirement:
+    envDef:
+      A: "2"
+  ResourceRequirement: {}
   InitialWorkDirRequirement:
     listing:
     - entryname: stage.py
@@ -132,8 +136,3 @@ requirements:
 
         print(f"s3://{bucket}/{subfolder}/catalog.json", file=sys.stdout)
   
-  InlineJavascriptRequirement: {}
-  EnvVarRequirement:
-    envDef:
-      A: "2"
-  ResourceRequirement: {}
