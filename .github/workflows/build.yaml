@@ -145,7 +145,7 @@ jobs:
           docker tag cwl-wrapper $IMAGE_ID:${{needs.version.outputs.app-version}}
           docker push $IMAGE_ID:${{needs.version.outputs.app-version}}
 
-  publish:
+  publish-artifacts:
 
     needs: 
       - container-crop
