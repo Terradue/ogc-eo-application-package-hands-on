@@ -46,6 +46,7 @@ $graph:
   steps:
     node_water_bodies:
       run: "#detect_water_body"
+      label: Detect water bodies over an area of interest and staged Landsat-9 or Sentinel-2 acquisitions
       in:
         item: stac_items
         aoi: aoi
@@ -57,6 +58,7 @@ $graph:
       scatterMethod: dotproduct
     node_stac:
       run: "#stac"
+      label: Generates a STAC catalog with the detected water bodies
       in: 
         item: stac_items
         rasters:
