@@ -33,7 +33,7 @@ $graph:
       type: Directory[]
     bands: 
       label: bands used for the NDWI
-      doc: bands used for the NDWI
+      doc: bands used for the NDWI ("green" and "nir" or "green" and "nir08")
       type: string[]
       default: ["green", "nir"]
 
