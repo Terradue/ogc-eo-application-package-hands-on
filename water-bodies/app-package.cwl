@@ -93,6 +93,7 @@ $graph:
 
   outputs:
     - id: detected_water_body
+      label: GeoTIFF with detected water body
       outputSource: 
       - node_otsu/binary_mask_item
       type: File
@@ -100,6 +101,7 @@ $graph:
   steps:
     node_crop:
       run: "#crop"
+      label: Crops the acquisition bands over the AOI
       in:
         item: item
         aoi: aoi
@@ -111,6 +113,7 @@ $graph:
       scatterMethod: dotproduct
     node_normalized_difference:
       run: "#norm_diff"
+      label: Generates the normalized difference
       in: 
         rasters: 
           source: node_crop/cropped
@@ -118,6 +121,7 @@ $graph:
       - ndwi
     node_otsu:
       run: "#otsu"
+      label: "Applies the Ostu automatic threshold"
       in:
         raster:
           source: node_normalized_difference/ndwi
