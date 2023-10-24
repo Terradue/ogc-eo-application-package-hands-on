@@ -39,6 +39,7 @@ $graph:
 
   outputs:
   - id: stac_catalog
+    label: STAC Catalog with the detected water bodies STAC Items
     outputSource:
     - node_stac/stac_catalog
     type: Directory
