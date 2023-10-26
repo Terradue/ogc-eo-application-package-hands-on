@@ -1,27 +1,15 @@
-"""Crop a STAC Item asset defined with its common band name"""
 import os
 import click
 import pystac
-from urllib.parse import urlparse
-from osgeo import gdal
+import rasterio 
+from rasterio.mask import mask
+from pyproj import Transformer
+from shapely import box
 from loguru import logger
-
-gdal.UseExceptions()
-SETTINGS = None
-
 
 def aoi2box(aoi):
     """Converts an area of interest expressed as a bounding box to a list of floats"""
     return [float(c) for c in aoi.split(",")]
-
-
-def get_common_name(asset):
-    """Returns the common band name of a STAC Item asset"""
-    if "eo:bands" in asset.to_dict().keys():
-        if "common_name" in asset.to_dict()["eo:bands"][0].keys():
-            return asset.to_dict()["eo:bands"][0]["common_name"]
-
-    return None
 
 def get_asset(item, common_name):
     """Returns the asset of a STAC Item defined with its common band name"""
@@ -38,25 +26,6 @@ def get_asset(item, common_name):
                 and b.properties["common_name"] == common_name
             ):
                 return asset
-
-
-def vsi_href(uri):
-    """Returns the VSI path of a URI"""
-    parsed = urlparse(uri)
-
-    if parsed.scheme.startswith("http"):
-        return f"/vsicurl/{uri}"
-    if parsed.scheme.startswith("file"):
-        return uri.replace("file://", "")
-
-    if parsed.scheme.startswith("s3"):
-        if SETTINGS:
-            for key, value in SETTINGS._asdict().items():
-                gdal.SetConfigOption(key, value)
-        return f"/vsis3/{uri.strip('s3://')}"
-
-    return uri
-
 
 @click.command(
     short_help="Crop",
@@ -87,7 +56,7 @@ def vsi_href(uri):
     required=True,
 )
 def crop(item_url, aoi, band, epsg):
-    """Crops a STAC Item asset defined with its common band name"""
+
     if os.path.isdir(item_url):
         catalog = pystac.read_file(os.path.join(item_url, "catalog.json"))
         item = next(catalog.get_items())
@@ -104,19 +73,30 @@ def crop(item_url, aoi, band, epsg):
         logger.error(msg)
         raise ValueError(msg)
 
-    asset_href = vsi_href(asset.get_absolute_href())
+    bbox = aoi2box(aoi) 
 
-    bbox = aoi2box(aoi)
+    with rasterio.open(asset.get_absolute_href()) as src:
 
-    ds = gdal.Open(asset_href)
+        transformer = Transformer.from_crs(epsg, src.crs, always_xy=True)
 
-    logger.info("Run gdal translate")
-    gdal.Translate(
-        f"crop_{band}.tif",
-        ds,
-        projWin=[bbox[0], bbox[3], bbox[2], bbox[1]],
-        projWinSRS=epsg,
-    )
+        minx, miny = transformer.transform(bbox[0], bbox[1])
+        maxx, maxy = transformer.transform(bbox[2], bbox[3])
+
+        transformed_bbox = box(minx, miny, maxx, maxy)
+
+        logger.info(f"Crop {asset.get_absolute_href()}")
+
+        out_image, out_transform = rasterio.mask.mask(src, [transformed_bbox], crop=True)
+        out_meta = src.meta.copy()
+
+        out_meta.update({
+            "height": out_image.shape[1],
+            "width": out_image.shape[2],
+            "transform": out_transform
+        })
+        with rasterio.open(f"crop_{band}.tif", 'w', **out_meta) as dst_dataset:
+            logger.info(f"Write crop_{band}.tif")
+            dst_dataset.write(out_image)
 
     logger.info("Done!")
 
