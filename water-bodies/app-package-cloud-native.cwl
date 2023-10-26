@@ -2,7 +2,7 @@ cwlVersion: v1.0
 
 $namespaces:
   s: https://schema.org/
-s:softwareVersion: 1.4.0
+s:softwareVersion: 1.4.1
 schemas:
 - http://schema.org/version/9.0/schemaorg-current-http.rdf
 
@@ -128,16 +128,15 @@ $graph:
     InlineJavascriptRequirement: {}
     EnvVarRequirement:
       envDef: 
-        PATH: /srv/conda/envs/env_crop/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-        PYTHONPATH: /workspaces/ogc-eo-application-package-hands-on/water-bodies/command-line-tools/crop:/home/jovyan/ogc-eo-application-package-hands-on/water-bodies/command-line-tools/crop:/home/jovyan/water-bodies/command-line-tools/crop:/workspaces/vscode-binder/command-line-tools/crop
-        PROJ_LIB: /srv/conda/envs/env_crop/share/proj/
+        PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+        PYTHONPATH: /app
     ResourceRequirement:
-      coresMax: 2
-      ramMax: 2028
+      coresMax: 1
+      ramMax: 512
 
   hints:
     DockerRequirement:
-      dockerPull: crop
+      dockerPull: localhost/crop:latest
 
   baseCommand: ["python", "-m", "app"]
   arguments: []
@@ -171,16 +170,15 @@ $graph:
     InlineJavascriptRequirement: {}
     EnvVarRequirement:
       envDef: 
-        PATH: /srv/conda/envs/env_norm_diff/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-        PYTHONPATH: /workspaces/ogc-eo-application-package-hands-on/water-bodies/command-line-tools/norm_diff:/home/jovyan/ogc-eo-application-package-hands-on/water-bodies/command-line-tools/norm_diff:/workspaces/vscode-binder/command-line-tools/norm_diff
-        PROJ_LIB: /srv/conda/envs/env_norm_diff/share/proj/
+        PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+        PYTHONPATH: /app
     ResourceRequirement:
-      coresMax: 2
-      ramMax: 2028
+      coresMax: 1
+      ramMax: 512
 
   hints:
     DockerRequirement:
-      dockerPull: norm_diff
+      dockerPull: localhost/norm_diff:latest
 
   baseCommand: ["python", "-m", "app"]
   arguments: []
@@ -202,16 +200,15 @@ $graph:
     InlineJavascriptRequirement: {}
     EnvVarRequirement:
       envDef: 
-        PATH: /srv/conda/envs/env_otsu/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-        PYTHONPATH: /workspaces/ogc-eo-application-package-hands-on/water-bodies/command-line-tools/otsu:/home/jovyan/ogc-eo-application-package-hands-on/water-bodies/command-line-tools/otsu:/workspaces/vscode-binder/command-line-tools/otsu
-        PROJ_LIB: /srv/conda/envs/env_otsu/share/proj/
+        PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+        PYTHONPATH: /app
     ResourceRequirement:
-      coresMax: 2
-      ramMax: 2028
+      coresMax: 1
+      ramMax: 512
 
   hints:
     DockerRequirement:
-      dockerPull: otsu
+      dockerPull: localhost/otsu:latest 
   
   baseCommand: ["python", "-m", "app"]
   arguments: []
@@ -233,16 +230,15 @@ $graph:
     InlineJavascriptRequirement: {}
     EnvVarRequirement:
       envDef: 
-        PATH: /srv/conda/envs/env_stac/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-        PYTHONPATH: /workspaces/ogc-eo-application-package-hands-on/water-bodies/command-line-tools/stac:/home/jovyan/ogc-eo-application-package-hands-on/water-bodies/command-line-tools/stac:/workspaces/vscode-binder/command-line-tools/stac
-        PROJ_LIB: /srv/conda/envs/env_stac/lib/python3.9/site-packages/rasterio/proj_data
+        PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+        PYTHONPATH: /app
     ResourceRequirement:
-      coresMax: 2
-      ramMax: 2028
+      coresMax: 1
+      ramMax: 512
 
   hints:
     DockerRequirement:
-      dockerPull: stac
+      dockerPull: localhost/stac:latest 
 
   baseCommand: ["python", "-m", "app"]
   arguments: []
