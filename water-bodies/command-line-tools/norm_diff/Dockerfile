@@ -2,29 +2,20 @@ FROM mambaorg/micromamba
 
 USER root
 
-ENV USERNAME=mambauser 
+ENV PATH=/opt/conda/envs/env_norm_diff/bin:$PATH
 
-ENV PATH=/srv/conda/envs/env_norm_diff/bin:$PATH
-
-RUN apt-get update -y \
- && apt-get upgrade -y \
- && apt-get install -y --no-install-recommends \
+RUN apt-get update -y && \
+    apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends \
         ca-certificates \
-        curl sudo git gcc build-essential
+        curl gcc build-essential && \
+    apt-get clean
 
-RUN echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME
-
-RUN mkdir -p /srv/conda && chown -R mambauser:1000 /srv/conda/
-
-RUN mkdir -p /workspaces/vscode-binder/command-line-tools/norm_diff
-
-RUN chown -R 1000:1000 /workspaces/vscode-binder/command-line-tools/norm_diff
+RUN mkdir -p /app && chown -R mambauser:mambauser /app
 
 USER mambauser
 
-RUN micromamba create -r /srv/conda -n env_norm_diff -c conda-forge gdal click   
+RUN micromamba create -n env_norm_diff -c conda-forge gdal click loguru && \
+    micromamba clean -a
 
-ADD app.py /workspaces/vscode-binder/command-line-tools/norm_diff/app.py
-
-WORKDIR /home/mambauser
+ADD app.py /app/app.py

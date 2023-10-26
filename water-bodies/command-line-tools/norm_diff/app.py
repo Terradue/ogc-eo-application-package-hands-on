@@ -1,7 +1,8 @@
 """Normalized difference"""
 import click
-from osgeo import gdal
 import numpy as np
+from osgeo import gdal
+from loguru import logger
 
 gdal.UseExceptions()
 
@@ -13,13 +14,13 @@ gdal.UseExceptions()
 def normalized_difference(rasters):
     """Performs a normalized difference"""
     
+    logger.info(f"Processing the normalized image with {rasters[0]} and {rasters[1]}")
+
     # Allow division by zero
     np.seterr(divide="ignore", invalid="ignore")
 
     ds1 = gdal.Open(rasters[0])
     ds2 = gdal.Open(rasters[1])
-
-    
 
     driver = gdal.GetDriverByName("GTiff")
 
@@ -44,6 +45,8 @@ def normalized_difference(rasters):
 
     dst_ds = None
     ds1 = ds2 = None
+
+    logger.info("Done!")
 
 if __name__ == "__main__":
     normalized_difference()

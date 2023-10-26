@@ -1,32 +1,22 @@
-FROM mambaorg/micromamba
+FROM docker.io/mambaorg/micromamba
 
 USER root
 
-ENV USERNAME=mambauser 
+ENV PATH=/opt/conda/envs/env_crop/bin:$PATH
 
-ENV PATH=/srv/conda/envs/env_crop/bin:$PATH
-
-RUN apt-get update -y \
- && apt-get upgrade -y \
- && apt-get install -y --no-install-recommends \
+RUN apt-get update -y && \
+    apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends \
         ca-certificates \
-        curl sudo git gcc build-essential
+        curl gcc build-essential && \
+    apt-get clean
 
-RUN echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME
-
-RUN mkdir -p /srv/conda && chown -R mambauser:1000 /srv/conda/
-
-RUN mkdir -p /workspaces/vscode-binder/command-line-tools/crop
-
-RUN chown -R 1000:1000 /workspaces/vscode-binder/command-line-tools/crop
+RUN mkdir -p /app && chown -R mambauser:mambauser /app
 
 USER mambauser
 
-RUN micromamba create -r /srv/conda -n env_crop -c conda-forge gdal click pystac  
+RUN micromamba create -n env_crop -c conda-forge gdal click pystac loguru && \
+    micromamba clean -a
 
+ADD app.py /app/app.py
 
-
-ADD app.py /workspaces/vscode-binder/command-line-tools/crop/app.py
-
-WORKDIR /home/mambauser

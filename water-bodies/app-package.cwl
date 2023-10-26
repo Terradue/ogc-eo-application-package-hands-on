@@ -29,7 +29,7 @@ $graph:
       default: "EPSG:4326"
     stac_items:
       label: Sentinel-2 STAC items
-      doc: list of staged Sentinel-2 COG STAC items
+      doc: list of staged Sentinel-2 or Landsat-9 COG STAC items
       type: Directory[]
     bands: 
       label: bands used for the NDWI

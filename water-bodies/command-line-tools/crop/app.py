@@ -1,9 +1,10 @@
 """Crop a STAC Item asset defined with its common band name"""
 import os
-from urllib.parse import urlparse
 import click
-from osgeo import gdal
 import pystac
+from urllib.parse import urlparse
+from osgeo import gdal
+from loguru import logger
 
 gdal.UseExceptions()
 SETTINGS = None
@@ -21,7 +22,6 @@ def get_common_name(asset):
             return asset.to_dict()["eo:bands"][0]["common_name"]
 
     return None
-
 
 def get_asset(item, common_name):
     """Returns the asset of a STAC Item defined with its common band name"""
@@ -94,10 +94,15 @@ def crop(item_url, aoi, band, epsg):
     else:
         item = pystac.read_file(item_url)
 
+    logger.info(f"Read {item.id} from {item.get_self_href()}")
+
     asset = get_asset(item, band)
+    logger.info(f"Read asset {band} from {asset.get_absolute_href()}")
 
     if not asset:
-        raise ValueError(f"Common band name {band} not found in the assets")
+        msg = f"Common band name {band} not found in the assets"
+        logger.error(msg)
+        raise ValueError(msg)
 
     asset_href = vsi_href(asset.get_absolute_href())
 
@@ -105,6 +110,7 @@ def crop(item_url, aoi, band, epsg):
 
     ds = gdal.Open(asset_href)
 
+    logger.info("Run gdal translate")
     gdal.Translate(
         f"crop_{band}.tif",
         ds,
@@ -112,6 +118,7 @@ def crop(item_url, aoi, band, epsg):
         projWinSRS=epsg,
     )
 
+    logger.info("Done!")
 
 if __name__ == "__main__":
     crop()

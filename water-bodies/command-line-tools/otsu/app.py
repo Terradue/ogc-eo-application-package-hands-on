@@ -3,6 +3,7 @@ import click
 import numpy as np
 from osgeo import gdal
 from skimage.filters import threshold_otsu
+from loguru import logger
 
 gdal.UseExceptions()
 
@@ -18,6 +19,8 @@ def threshold(data):
 @click.argument("raster", nargs=1)
 def otsu(raster):
     """Applies the Otsu threshold"""
+
+    logger.info(f"Applying the Otsu threshold to {raster}")
     ds = gdal.Open(raster)
 
     driver = gdal.GetDriverByName("GTiff")
@@ -42,6 +45,7 @@ def otsu(raster):
     dst_ds = None
     ds = None
 
+    logger.info("Done!")
 
 if __name__ == "__main__":
     otsu()

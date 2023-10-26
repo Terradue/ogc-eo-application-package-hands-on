@@ -4,7 +4,7 @@ import shutil
 import click
 import pystac
 import rio_stac
-
+from loguru import logger
 
 @click.command(
     short_help="Creates a STAC catalog",
@@ -26,6 +26,8 @@ import rio_stac
 )
 def to_stac(item_urls, water_bodies):
     """Creates a STAC catalog with the detected water bodies"""
+
+    logger.info(f"Creating a STAC Catalog for {' '.join(water_bodies)}")
     cat = pystac.Catalog(id="catalog", description="water-bodies")
 
     for index, item_url in enumerate(item_urls):
@@ -37,7 +39,7 @@ def to_stac(item_urls, water_bodies):
 
         water_body = water_bodies[index]
 
-        os.mkdir(item.id)
+        os.makedirs(item.id, exist_ok=True)
         shutil.copy(water_body, item.id)
 
         out_item = rio_stac.stac.create_stac_item(
@@ -56,7 +58,7 @@ def to_stac(item_urls, water_bodies):
     cat.normalize_and_save(
         root_href="./", catalog_type=pystac.CatalogType.SELF_CONTAINED
     )
-
+    logger.info("Done!")
 
 if __name__ == "__main__":
     to_stac()
