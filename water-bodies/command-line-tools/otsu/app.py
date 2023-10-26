@@ -1,11 +1,9 @@
 """Command line tool to apply the Otsu threshold to a raster"""
 import click
+import rasterio
 import numpy as np
-from osgeo import gdal
 from skimage.filters import threshold_otsu
 from loguru import logger
-
-gdal.UseExceptions()
 
 def threshold(data):
     """Returns the Otsu threshold of a numpy array"""
@@ -20,30 +18,15 @@ def threshold(data):
 def otsu(raster):
     """Applies the Otsu threshold"""
 
+    with rasterio.open(raster) as ds:
+        array = ds.read(1)
+        out_meta = ds.meta.copy()
+
     logger.info(f"Applying the Otsu threshold to {raster}")
-    ds = gdal.Open(raster)
 
-    driver = gdal.GetDriverByName("GTiff")
-
-    dst_ds = driver.Create(
-        "otsu.tif",
-        ds.RasterXSize,
-        ds.RasterYSize,
-        1,
-        gdal.GDT_Byte,
-        options=["TILED=YES", "COMPRESS=DEFLATE", "INTERLEAVE=BAND"],
-    )
-
-    dst_ds.SetGeoTransform(ds.GetGeoTransform())
-    dst_ds.SetProjection(ds.GetProjectionRef())
-
-    array = ds.GetRasterBand(1).ReadAsArray().astype(float)
-
-    dst_ds.GetRasterBand(1).WriteArray(threshold(array))
-    dst_ds.GetRasterBand(1).SetNoDataValue(0)
-
-    dst_ds = None
-    ds = None
+    with rasterio.open("otsu.tif", 'w', **out_meta) as dst_dataset:
+        logger.info(f"Write otsu.tif")
+        dst_dataset.write(threshold(array), indexes=1)
 
     logger.info("Done!")
 

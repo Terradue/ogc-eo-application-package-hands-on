@@ -1,10 +1,11 @@
 """Normalized difference"""
 import click
+import rasterio
 import numpy as np
-from osgeo import gdal
 from loguru import logger
 
-gdal.UseExceptions()
+np.seterr(divide="ignore", invalid="ignore")
+
 
 @click.command(
     short_help="Normalized difference",
@@ -16,35 +17,18 @@ def normalized_difference(rasters):
     
     logger.info(f"Processing the normalized image with {rasters[0]} and {rasters[1]}")
 
-    # Allow division by zero
-    np.seterr(divide="ignore", invalid="ignore")
+    with rasterio.open(rasters[0]) as ds1:
+        array1 = ds1.read(1)
+        out_meta = ds1.meta.copy()
 
-    ds1 = gdal.Open(rasters[0])
-    ds2 = gdal.Open(rasters[1])
+    with rasterio.open(rasters[0]) as ds2:
+        array2 = ds2.read(1)
 
-    driver = gdal.GetDriverByName("GTiff")
+    out_meta.update({'dtype': "float32"})
 
-    dst_ds = driver.Create(
-        "norm_diff.tif",
-        ds1.RasterXSize,
-        ds1.RasterYSize,
-        1,
-        gdal.GDT_Float32,
-        options=["TILED=YES", "COMPRESS=DEFLATE", "INTERLEAVE=BAND"],
-    )
-
-    dst_ds.SetGeoTransform(ds1.GetGeoTransform())
-    dst_ds.SetProjection(ds1.GetProjectionRef())
-
-    array1 = ds1.GetRasterBand(1).ReadAsArray().astype(float)
-    array2 = ds2.GetRasterBand(1).ReadAsArray().astype(float)
-
-    norm_diff = (array1 - array2) / (array1 + array2)
-
-    dst_ds.GetRasterBand(1).WriteArray(norm_diff)
-
-    dst_ds = None
-    ds1 = ds2 = None
+    with rasterio.open("norm_diff.tif", 'w', **out_meta) as dst_dataset:
+        logger.info(f"Write norm_diff.tif")
+        dst_dataset.write((array1 - array2) / (array1 + array2), indexes=1)
 
     logger.info("Done!")
 
